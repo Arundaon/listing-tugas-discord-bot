@@ -5,6 +5,7 @@
   "main": "myBot.js",
   "dependencies": {
     "discord.js": "^12.4.1",
+    "mongoose": "^5.10.13",
     "nodemon": "^2.0.6"
   },
   "devDependencies": {},

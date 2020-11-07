@@ -1,13 +1,23 @@
 //task :
 //- kirim tugases ke json & read ke tugases
 const discord = require('discord.js');
+const mongoose = require('mongoose')
+const Tugas = mongoose.model("Tugas")
+const connectDb = `mongodb+srv://ary:${process.env.mongopas}@tugas.xiech.mongodb.net/tugas-database?retryWrites=true&w=majority`
+let storage;
 const client = new discord.Client();
-let tugases = [];
+mongoose.connect(connectDb,{useNewUrlParser:true,useUnifiedTopology:true})
+.then(()=>{ console.log("connected to database")
+    storage = Tugas.find({},(err,result)=>{
+storage= result;
+console.log(storage)
+})})
+.catch(err=>console.log(err))
 const fs = require('fs');
 const { stringify } = require('querystring');
 client.on("ready",()=>{
     console.log("Bot logged in as "+ client.user.tag);
-    client.user.setActivity("with Javascript");
+    client.user.setActivity("with Tugas Kuliah");
 })
 client.on("message",(receivedMessage)=>{
 if(receivedMessage.author == client.user){
