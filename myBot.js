@@ -1,17 +1,12 @@
-//task :
-//- kirim tugases ke json & read ke tugases
-const discord = require('discord.js');
 const mongoose = require('mongoose')
-const Tugas = mongoose.model("Tugas")
-const connectDb = `mongodb+srv://ary:${process.env.mongopas}@tugas.xiech.mongodb.net/tugas-database?retryWrites=true&w=majority`
-let storage;
+const connectDb = `mongodb+srv://ary:${process.env.dbKey}@tugas.xiech.mongodb.net/tugas-database?retryWrites=true&w=majority`
+const Schema = mongoose.Schema;
+const Tugas = mongoose.model('Tugas',new Schema({matkul:String,tugas:String
+,tanggal:Number,bulan:Number}))
+const discord = require('discord.js');
 const client = new discord.Client();
 mongoose.connect(connectDb,{useNewUrlParser:true,useUnifiedTopology:true})
-.then(()=>{ console.log("connected to database")
-    storage = Tugas.find({},(err,result)=>{
-storage= result;
-console.log(storage)
-})})
+.then(()=>{ console.log("connected to database")})
 .catch(err=>console.log(err))
 const fs = require('fs');
 const { stringify } = require('querystring');
@@ -23,7 +18,6 @@ client.on("message",(receivedMessage)=>{
 if(receivedMessage.author == client.user){
     return
 }
-// receivedMessage.channel.send("Hello "+ receivedMessage.author.toString()+", you send : '"+receivedMessage.content+"'");
 if(receivedMessage.content.startsWith("!")){
     processCommand(receivedMessage);
 }
@@ -34,13 +28,19 @@ if(message.toLowerCase() == "show"){
     showTugas(receivedMessage)
 }
 else if(message.toLowerCase() == "ping"){
-    receivedMessage.channel.send("duar")
+    receivedMessage.channel.send("pong")
 }
 else if(message.toLowerCase() == "help"){
     receivedMessage.channel
-.send(`!add, matkul, tugas, deadline **//untuk menambah tugas**
+.send(`!ping **//untuk ping bot**
+!help **//untuk melihat list command**
+!add, matkul, tugas, tanggal/bulan **//untuk menambah tugas**
 !show **//untuk melihat list tugas**
-!delete, nomor **// untuk menghapus tugas**`)
+!delete, nomor **// untuk menghapus tugas**
+**contoh :** 
+!add, PemDas, contoh tugas, 17/8
+!show
+!delete, 5`)
 }
 else if (message.toLowerCase().startsWith('delete')){
     let [command,nomor] = message.split(',');
@@ -79,58 +79,48 @@ else{
 }
 }
 function addTugas(matkul,tugas,berapaHari,receivedMessage,tanggal,bulan){
-    tugases.push({
-        matkul,tugas,berapaHari
-    })
-    fs.readFile('./tes.json','utf-8',(err,data)=>{
-        let storage = JSON.parse(data);
-        let i = 0
-        while(storage.hasOwnProperty('tugas'+i)){i++}
-        storage['tugas'+i] = {
-            matkul,tugas,tanggal,bulan
-        } 
-        fs.writeFile('./tes.json',JSON.stringify(storage),(err)=>{
-        })
-    })
+    Tugas.create({matkul,tugas,tanggal,bulan})
     receivedMessage.channel.send(`Data berhasil dimasukkan`);
 }
 function showTugas(receivedMessage){
-    fs.readFile('./tes.json','utf-8',(err,data)=>{
-        let storage = JSON.parse(data);
         let lines="";
-        let keys = Object.keys(storage)
-        keys.forEach((key,i)=>{
-            if(hmin(storage[key].tanggal,storage[key].bulan)<0){
+        Tugas.find({},(err,res)=>{
+            res.forEach((key,i)=>{
+                if(hmin(key.tanggal,key.bulan)<0){
+                    Tugas.deleteOne({_id:key._id},(err)=>{
+                        if(err){console.log(err)}
+                        console.log("berhasil mendelete tugas Hmin minus")
+                    })
+                }
+            })
+            res.sort((a, b) => {
+                return hmin(a.tanggal,a.bulan) - hmin(b.tanggal,b.bulan)
+            })
+            res.forEach((key,i)=>{
+                lines+=`${i+1}. ${key.matkul.trim()}, ${key.tugas.trim()}, H-${hmin(key.tanggal,key.bulan)}\n`
                 
-                delete storage[key];
-            }
         })
-        
-        keys.sort((a, b) => {
-            return hmin(storage[a].tanggal,storage[a].bulan) - hmin(storage[b].tanggal,storage[b].bulan)
-        });
-        
-        keys.forEach((key,i)=>{
-            lines+=`${i+1}. ${storage[key].matkul.trim()}, ${storage[key].tugas.trim()}, H-${hmin(storage[key].tanggal,storage[key].bulan)}\n`
+        if(lines.length==0){
+            receivedMessage.channel.send("hore, ngga ada tugas :D")
+        }
+        else{
+            receivedMessage.channel.send(lines)
+        }
+
         })
-        fs.writeFile('./tes.json',JSON.stringify(storage),(err)=>{})
-        receivedMessage.channel.send(lines)
-    })
 }
 function deleteTugas(nomor,receivedMessage){
-    fs.readFile('./tes.json','utf-8',(err,data)=>{
-        let storage = JSON.parse(data);
-        delete storage[Object.keys(storage)[nomor-1]];
-        fs.writeFile('./tes.json',JSON.stringify(storage),(err)=>{})
+    Tugas.find({},(err,res)=>{
+        res.forEach((e,i)=>{
+            if(i+1 == nomor){
+                Tugas.deleteOne({_id:e._id},(err)=>{
+                    if(err){console.log(err)}
+                })
+            }
+        })
     })
 }
 function hmin(tanggal,bulan){
 return Math.ceil(parseFloat((new Date(`${bulan}/${tanggal}/${new Date().getFullYear()}`)-new Date)/(1000*60*60*24)));
-}
-function urutinHmin(objek){
-    let all={};
-Object.keys(objek).forEach((namaSubObjek)=>{
-hmin(objek[namaSubObjek].tanggal,objek[namaSubObjek].bulan);
-})
 }
 client.login(process.env.token);
