@@ -12,7 +12,13 @@ const fs = require('fs');
 const { stringify } = require('querystring');
 client.on("ready",()=>{
     console.log("Bot logged in as "+ client.user.tag);
-    client.user.setActivity("with Tugas Kuliah");
+    client.user.setPresence({
+        status: "online",  // You can show online, idle... Do not disturb is dnd
+        game: {
+            name: "!help",  // The message shown
+            type: "LISTENING" // PLAYING, WATCHING, LISTENING, STREAMING,
+        }
+    });
 })
 client.on("message",(receivedMessage)=>{
 if(receivedMessage.author == client.user){
