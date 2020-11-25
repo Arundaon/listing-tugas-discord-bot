@@ -1,0 +1,2 @@
+-   data yang akan dihapus saat showTugas() ditampilkan dulu 
+    (mungkin karena Tugas.find asinkron)
