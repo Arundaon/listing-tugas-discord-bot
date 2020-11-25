@@ -182,7 +182,7 @@ function prosesShow(res,err,lines,receivedMessage){
     //11 = pembatas antara(3), spasi pengapit(8)
     lines+=">>> ```";
     lines+= `┌${whiteSpace("",total,"─")}┐\n`;
-    lines+= `| No │ ${whiteSpace("Matkul",terpanjang.matkul)} │ ${whiteSpace("Tugas",terpanjang.tugas)} │ ${whiteSpace("H-X",2+2)} │ ${whiteSpace("Jam",5)} │\n`;
+    lines+= `│ No │ ${whiteSpace("Matkul",terpanjang.matkul)} │ ${whiteSpace("Tugas",terpanjang.tugas)} │ ${whiteSpace("H-X",2+2)} │ ${whiteSpace("Jam",5)} │\n`;
     lines+= `│${whiteSpace("",total,"─")}│\n`;
     res.forEach((key,i)=>{
         
