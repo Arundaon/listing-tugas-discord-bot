@@ -163,9 +163,9 @@ function prosesShow(res,err,lines,receivedMessage){
         return selisih(a.bulan,a.tanggal,a.jam,a.menit) - selisih(b.bulan,b.tanggal,b.jam,b.menit)
     })
     let terpanjang = {
-        matkul : 0,
-        tugas : 0,
-        hmin : 0
+        matkul : 6,
+        tugas : 5,
+        hmin : 3
     };
     res.forEach((key,i)=>{
         if(key.matkul.length > terpanjang.matkul){
