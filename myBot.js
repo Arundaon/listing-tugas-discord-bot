@@ -131,8 +131,8 @@ function selisih(bulan,tanggal,jam,menit){
 }
 function stringPlusZero(number){
     let stringed = ""
-    let numbers = [...numbers];
-        if(number<10 && numbers[0]!=0){
+    number=Number(number)
+        if(number<10){
     return "0"+number
     }
     return number
