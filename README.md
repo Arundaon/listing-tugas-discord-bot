@@ -1,5 +1,6 @@
 # listing-tugas-discord-bot
 Bot discord untuk me-list tugas kuliah
+![](demo.gif)
 
 fitur-fitur :
 - penghitung mundur H min (misal H-11)
