@@ -33,15 +33,15 @@ else if(message.toLowerCase() == "ping"){
 }
 else if(message.toLowerCase() == "help"){
     receivedMessage.channel
-.send(`!ping **//untuk ping bot**
-!help **//untuk melihat list command**
-!add, matkul, tugas, tanggal/bulan, jam:menit **//untuk menambah tugas**
-!show **//untuk melihat list tugas**
-!delete, nomor **// untuk menghapus tugas**
+.send(`$ping **//untuk ping bot**
+$help **//untuk melihat list command**
+$add, matkul, tugas, tanggal/bulan, jam:menit **//untuk menambah tugas**
+$show **//untuk melihat list tugas**
+$delete, nomor **// untuk menghapus tugas**
 **contoh :** 
-!add, Pemdas, pengkondisian, 17/8, 23:59
-!show
-!delete, 5`)
+$add, Pemdas, pengkondisian, 17/8, 23:59
+$show
+$delete, 5`)
 }
 else if (message.toLowerCase().startsWith('delete')){
     let [command,nomor] = message.split(',');
