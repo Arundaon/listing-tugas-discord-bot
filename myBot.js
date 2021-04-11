@@ -152,14 +152,19 @@ async function prosesShow(res,err,lines,receivedMessage){
         return
         }
     res.forEach(async (key,i)=>{
+
         
+    })
+    for( const key of res){
+            
         if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
             await Tugas.deleteOne({_id:key._id},(err)=>{
                 if(err){console.log(err)}
                 console.log("berhasil mendelete tugas Hmin minus")
             })
         }
-    })
+            
+    }
     res.sort((a, b) => {
         return selisih(a.bulan,a.tanggal,a.jam,a.menit) - selisih(b.bulan,b.tanggal,b.jam,b.menit)
     })
