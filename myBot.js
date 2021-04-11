@@ -101,19 +101,23 @@ async function showTugas(receivedMessage){
         let lines="";
         
         
-        Tugas.find({},async (err,res)=>{
+        await Tugas.find({},async (err,res)=>{
             for( const key of res){
             
-        if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
-            await Tugas.deleteOne({_id:key._id},(err)=>{
-                if(err){console.log(err)}
-                console.log("berhasil mendelete tugas Hmin minus")
-                })
-            }
+                if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
+                    await Tugas.deleteOne({_id:key._id},(err)=>{
+                        if(err){console.log(err)}
+                        console.log("berhasil mendelete tugas Hmin minus")
+                    })
+                }
+
+             }
             
-        }
+        })
+    
+         Tugas.find({},(err,res)=>{
             
-            prosesShow(res,err,lines,receivedMessage)
+                prosesShow(res,err,lines,receivedMessage)
             
         })
 
