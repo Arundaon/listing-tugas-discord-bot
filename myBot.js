@@ -198,7 +198,7 @@ function prosesShow(res,err,lines,receivedMessage){
     res.forEach((key,i)=>{
         
         let hmins = hmin(key.tanggal,key.bulan)
-        lines+= `│ ${whiteSpace(stringPlusZero(i+1),2)} │ ${whiteSpace(key.matkul,terpanjang.matkul)} │ ${whiteSpace(key.tugas,terpanjang.tugas)} │ H-${whiteSpace(hmins.toString(),2)} │ ${whiteSpace(`${key.jam}:${key.menit}`,5)} │\n`;
+        lines+= `│ ${whiteSpace(stringPlusZero(i+1),2)} │ ${whiteSpace(key.matkul,terpanjang.matkul)} │ ${whiteSpace(key.tugas,terpanjang.tugas)} │ H-${whiteSpace(hmins.toString(),2)} │ ${whiteSpace(`${stringPlusZero(key.jam)}:${stringPlusZero(key.menit)}`,5)} │\n`;
         // lines+=`${i+1}. ${key.matkul}, ${key.tugas}, H-${hmin(key.tanggal,key.bulan)}, ${key.jam}:${key.menit}\n`
         
         
