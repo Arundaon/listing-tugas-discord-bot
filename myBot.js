@@ -19,7 +19,7 @@ client.on("message",(receivedMessage)=>{
 if(receivedMessage.author == client.user){
     return
 }
-if(receivedMessage.content.startsWith("!")){
+if(receivedMessage.content.startsWith("$")){
     processCommand(receivedMessage);
 }
 })
@@ -146,15 +146,15 @@ function whiteSpace(huruf,length,white=" "){
     }
     return total;
 }
-function prosesShow(res,err,lines,receivedMessage){
+async function prosesShow(res,err,lines,receivedMessage){
     if( res.length==0){
         receivedMessage.channel.send("hore, ngga ada tugas :D")
         return
         }
     res.forEach((key,i)=>{
-
+        
         if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
-            Tugas.deleteOne({_id:key._id},(err)=>{
+            await Tugas.deleteOne({_id:key._id},(err)=>{
                 if(err){console.log(err)}
                 console.log("berhasil mendelete tugas Hmin minus")
             })
