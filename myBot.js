@@ -97,11 +97,25 @@ function addTugas(matkul,tugas,receivedMessage,tanggal,bulan,jam,menit){
     })
 
 }
-function showTugas(receivedMessage){
+async function showTugas(receivedMessage){
         let lines="";
         
         
-        Tugas.find({},(err,res)=>{prosesShow(res,err,lines,receivedMessage)})
+        Tugas.find({},(err,res)=>{
+            for( const key of res){
+            
+        if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
+            await Tugas.deleteOne({_id:key._id},(err)=>{
+                if(err){console.log(err)}
+                console.log("berhasil mendelete tugas Hmin minus")
+                })
+            }
+            
+        }
+            
+            prosesShow(res,err,lines,receivedMessage)
+            
+        })
 
 }
 function deleteTugas(nomor,receivedMessage){
@@ -146,25 +160,12 @@ function whiteSpace(huruf,length,white=" "){
     }
     return total;
 }
-async function prosesShow(res,err,lines,receivedMessage){
+function prosesShow(res,err,lines,receivedMessage){
     if( res.length==0){
         receivedMessage.channel.send("hore, ngga ada tugas :D")
         return
         }
-    res.forEach(async (key,i)=>{
-
-        
-    })
-    for( const key of res){
-            
-        if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
-            await Tugas.deleteOne({_id:key._id},(err)=>{
-                if(err){console.log(err)}
-                console.log("berhasil mendelete tugas Hmin minus")
-            })
-        }
-            
-    }
+    
     res.sort((a, b) => {
         return selisih(a.bulan,a.tanggal,a.jam,a.menit) - selisih(b.bulan,b.tanggal,b.jam,b.menit)
     })
