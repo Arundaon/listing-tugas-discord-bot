@@ -13,7 +13,7 @@ const fs = require('fs');
 const { stringify } = require('querystring');
 client.on("ready",()=>{
     console.log("Bot logged in as "+ client.user.tag);
-    client.user.setActivity("!help",{type:"LISTENING"});
+    client.user.setActivity("$help",{type:"LISTENING"});
 })
 client.on("message",(receivedMessage)=>{
 if(receivedMessage.author == client.user){
@@ -77,7 +77,7 @@ else{
         }
     }
     else{
-        receivedMessage.channel.send(`perintah tidak valid, ketikkan "!help" untuk bantuan`);
+        receivedMessage.channel.send(`perintah tidak valid, ketikkan "$help" untuk bantuan`);
     }
 }
 }
