@@ -101,7 +101,7 @@ async function showTugas(receivedMessage){
         let lines="";
         
         
-        Tugas.find({},(err,res)=>{
+        Tugas.find({},async (err,res)=>{
             for( const key of res){
             
         if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
