@@ -151,7 +151,7 @@ async function prosesShow(res,err,lines,receivedMessage){
         receivedMessage.channel.send("hore, ngga ada tugas :D")
         return
         }
-    res.forEach((key,i)=>{
+    res.forEach(async (key,i)=>{
         
         if(selisih(key.bulan,key.tanggal,key.jam,key.menit)<0){
             await Tugas.deleteOne({_id:key._id},(err)=>{
